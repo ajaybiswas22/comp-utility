@@ -1,5 +1,6 @@
-# Object file
-*.o
+# Executable files
+*.exe
+*.out
 
-# Ada Library Information
-*.ali
+# VS Code files
+*settings.json 
