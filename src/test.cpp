@@ -1,4 +1,4 @@
-/**
+/*
 
 Licensed under the MIT License <http://opensource.org/licenses/MIT>.
 
@@ -27,9 +27,17 @@ SOFTWARE.
 
 int main() {
 
-    computil::AP<int> obj(2,4,10);
+    computil::AP<double> obj(1,1,5);
 
-    std::cout<<obj.getNthTerm(3);
+    std::vector<double> a = obj.getAllTerms();
+
+    for(int i =0 ; i< a.size();i++)
+    {
+        std::cout<<a[i]<<" ";
+    }
+    std::cout<<std::endl;
+
+    std::cout<<obj.getNthTerm(5);
 
     return 0;
 }

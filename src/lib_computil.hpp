@@ -1,6 +1,6 @@
 
 
-/**
+/*
 
 Copyright (c) 2021 Ajay Biswas
 
@@ -32,109 +32,160 @@ SOFTWARE.
 #include <map>
 #include <array>
 #include <cmath>
+#include <exception>
 
 namespace computil {
 
-    template<class T>
-    class AP {
+/**
+*  @brief A container to calculate the Arithematic Progression and provides
+*  fixed time access of elements.
+*
+*  @ingroup sequences and series
+*
+*  @tparam T Type of element.
+*
+*  An Arithmetic progression (AP) or arithmetic sequence is a sequence of numbers 
+*  in which the difference of any two consecutive number is constant. This class 
+*  provides support of various AP related operations.
+*  
+*/
+template<class T>
+class AP {
 
-    private:
-        T a, d;
-        unsigned int n;
-        bool status;
+private:
+    T a, d;
+    unsigned int n;
+    bool status;
 
-    public:
-        AP();
-        AP(T first_term, T common_diff, T no_of_terms);   
-        bool isEmpty();
-        T getCommonDiff();
-        T getFirstTerm();
-        T getNthTerm(unsigned int nth);
-        T getNthTermFromLast(unsigned int nth);
-        unsigned int getNoOfTerms();
-        T sumN();
-        static inline T sumN(T first_term, T last_term) {return (first_term + last_term)/2;}
-        void setCommonDiff(T common_diff);
-        void setFirstTerm(T first_term);
-        void setNoOfTerms(T no_of_terms);
-        std::vector<T> getAllTerms();
-    };
+public:
+    AP();
+    AP(T first_term, T common_diff, T no_of_terms);   
+    bool isEmpty();
+    T getCommonDiff();
+    T getFirstTerm();
+    T getNthTerm(unsigned int nth);
+    T getNthTermFromLast(unsigned int nth);
+    unsigned int getNoOfTerms();
+    T sumN();
+    static inline T sumN(T first_term, T last_term, unsigned int n) {return n*(first_term + last_term)/2.0;}
+    void setCommonDiff(T common_diff);
+    void setFirstTerm(T first_term);
+    void setNoOfTerms(T no_of_terms);
+    std::vector<T> getAllTerms();
+};
 
-    template<class T>
-    AP<T>::AP() {
-        status = true;
-        a = 0;
-        d = 0;
-        n = 0;
-    } 
+template<class T>
+AP<T>::AP() {
+    status = true;
+    a = 0;
+    d = 0;
+    n = 0;
+} 
 
-    template<class T>
-    AP<T>::AP(T first_term, T common_diff, T no_of_terms) {
-        status = false;
-        a = first_term;
-        d = common_diff;
-        n = no_of_terms;
-    }
-
-    template<class T>
-    bool AP<T>::isEmpty() {
-        return status;
-    }
-
-    template<class T>
-    T AP<T>::getCommonDiff() {
-        return d;
-    }
-
-    template<class T>
-    T AP<T>::getFirstTerm() {
-        return a;
-    }
-
-    template<class T>
-    T AP<T>::getNthTerm(unsigned int nth) {
-        return a + (nth-1)*d;
-    }
-
-    template<class T>
-    T AP<T>::getNthTermFromLast(unsigned int nth) {
-        return getNthTerm(n) - (nth-1)*d;
-    }
-
-    template<class T>
-    unsigned int AP<T>::getNoOfTerms() {
-        return n;
-    }
-
-    template<class T>
-    T AP<T>::sumN() {
-        
-        return (n/2)*(2*a + (n-1)*d);
-    }
-
-    template<class T>
-    void AP<T>::setCommonDiff(T common_diff) {
-        d = common_diff;
-    }
-
-    template<class T>
-    void AP<T>::setFirstTerm(T first_term) {
-        a = first_term;
-    }
-
-    template<class T>
-    void AP<T>::setNoOfTerms(T no_of_terms) {
-        n = no_of_terms;
-    }
-
-    template<class T>
-    std::vector<T> AP<T>::getAllTerms() {
-        
-        std::vector<T> v;
-
-        for(unsigned int i = 1; i<=n; i++) {
-            v.push_back(getNthTerm(i));
-        }
-    }
-
+template<class T>
+AP<T>::AP(T first_term, T common_diff, T no_of_terms) {
+    status = false;
+    a = first_term;
+    d = common_diff;
+    n = no_of_terms;
 }
+
+template<class T>
+bool AP<T>::isEmpty() {
+    return status;
+}
+
+template<class T>
+T AP<T>::getCommonDiff() {
+    return d;
+}
+
+template<class T>
+T AP<T>::getFirstTerm() {
+    return a;
+}
+
+/**
+*  @brief  Returns the nth term of an AP.
+*  @param  nth  An unsigned integer denoting the n.
+*  @return The nth term of the AP of the type same as the class.
+*  @throws std::logic_error if the status if true, i.e., not initialized.
+*          std::out_of_range if the nth no. is an invalid term.
+           std::domain_error if the nth no. is zero or negative.
+*
+*  Uses the first term a, common difference d and the user input nth
+*  to calculate the nth term.
+*  
+*/
+template<class T>
+T AP<T>::getNthTerm(unsigned int nth) {
+
+    if(status == true) {
+        throw std::logic_error("AP not initialized");
+    }
+    if(nth > n) {
+        throw std::out_of_range("Not enough terms in AP");
+    }
+    if(nth <= 0) {
+        throw std::domain_error("Terms cannot be zero or negative");
+    }
+    return a + (nth-1)*d;
+}
+
+/**
+*  @brief  Returns the nth term of an AP from the last.
+*  @param  nth  An unsigned integer denoting the n.
+*  @return The nth term of the AP from the last of the type same as the class.
+*  @throws std::logic_error if the status if true, i.e., not initialized.
+*          std::out_of_range if the nth no. is an invalid term.
+           std::domain_error if the nth no. is zero or negative.
+*
+*  Uses the getNthTerm(), common difference d and the user input nth
+*  to calculate the nth term from the last.
+*  
+*/
+template<class T>
+T AP<T>::getNthTermFromLast(unsigned int nth) {
+    return getNthTerm(n) - (nth-1)*d;
+}
+
+
+template<class T>
+unsigned int AP<T>::getNoOfTerms() {
+    return n;
+}
+
+template<class T>
+T AP<T>::sumN() {
+    
+    return (n/2.0)*(2*a + (n-1)*d);
+}
+
+template<class T>
+void AP<T>::setCommonDiff(T common_diff) {
+    d = common_diff;
+}
+
+template<class T>
+void AP<T>::setFirstTerm(T first_term) {
+    a = first_term;
+}
+
+template<class T>
+void AP<T>::setNoOfTerms(T no_of_terms) {
+    n = no_of_terms;
+}
+
+template<class T>
+std::vector<T> AP<T>::getAllTerms() {
+    
+    std::vector<T> v;
+
+    for(unsigned int i = 0; i<n; i++) {
+        v.push_back(a+ i*d);
+    }
+
+    return v;
+}
+
+}   // namespace ends
