@@ -45,7 +45,7 @@ namespace computil {
 *  @tparam T Type of element.
 *
 *  An Arithmetic progression (AP) or arithmetic sequence is a sequence of numbers 
-*  in which the difference of any two consecutive number is constant. This class 
+*  in which the common difference 'd' of any two consecutive number is constant. This class 
 *  provides support of various AP related operations.
 *  
 */
@@ -75,6 +75,41 @@ public:
 };
 
 template<class T>
+class GP {
+
+private:
+
+public:
+
+
+
+};
+
+template<class T>
+class Prime {
+
+private:
+
+public:
+
+    static bool isPrime(T num);
+    static T nearestPrime(T num);
+    static std::vector<T> getPrimeInRange(unsigned int lower_limit, unsigned int upper_limit);
+    static std::vector<T> getFirstNPrime(unsigned int n);
+    static std::string getType(T num);
+    static T randomPrime(unsigned int no_of_digits);
+};
+
+template<class T>
+class BooleanAlgebra {
+
+private:
+
+};
+
+
+
+template<class T>
 AP<T>::AP() {
     status = true;
     a = 0;
@@ -95,11 +130,25 @@ bool AP<T>::isEmpty() {
     return status;
 }
 
+/**
+*  @brief  Returns the common difference 'd' of an AP.
+*  @return The common difference of the AP of the type same as the class.
+*  @throws std::logic_error if the status if true, i.e., not initialized.
+*
+*  Returns the common difference 'd' of an AP which was initialized by the user. 
+*/
 template<class T>
 T AP<T>::getCommonDiff() {
     return d;
 }
 
+/**
+*  @brief  Returns the First term of an AP.
+*  @return The first term of the AP of the type same as the class.
+*  @throws std::logic_error if the status if true, i.e., not initialized.
+*
+*  Returns the first term 'a' of an AP which was initialized by the user.
+*/
 template<class T>
 T AP<T>::getFirstTerm() {
     return a;
@@ -114,8 +163,7 @@ T AP<T>::getFirstTerm() {
            std::domain_error if the nth no. is zero or negative.
 *
 *  Uses the first term a, common difference d and the user input nth
-*  to calculate the nth term.
-*  
+*  to calculate the nth term. 
 */
 template<class T>
 T AP<T>::getNthTerm(unsigned int nth) {
@@ -141,15 +189,20 @@ T AP<T>::getNthTerm(unsigned int nth) {
            std::domain_error if the nth no. is zero or negative.
 *
 *  Uses the getNthTerm(), common difference d and the user input nth
-*  to calculate the nth term from the last.
-*  
+*  to calculate the nth term from the last.  
 */
 template<class T>
 T AP<T>::getNthTermFromLast(unsigned int nth) {
     return getNthTerm(n) - (nth-1)*d;
 }
 
-
+/**
+*  @brief  Returns the total no. of terms of the AP.
+*  @return The total no. of terms 'n' of the AP of the type same as the class.
+*  @throws std::logic_error if the status if true, i.e., not initialized.
+*
+*  Returns the total no. of terms 'n' of an AP that was initialized by the user.
+*/
 template<class T>
 unsigned int AP<T>::getNoOfTerms() {
     return n;
@@ -186,6 +239,34 @@ std::vector<T> AP<T>::getAllTerms() {
     }
 
     return v;
+}
+
+template<class T>
+bool Prime<T>::isPrime(T num) {
+    
+    try {
+
+        if(num <= 1)
+            return false;
+
+        long double v = num - floor(num);
+        if(v > 0.0)
+            return false;
+
+        unsigned long long int val = num;
+        
+        for(unsigned long long int i=2; i<=sqrt(val); i++)
+        {
+            if(val%i == 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    catch(...) {
+        throw std::domain_error("Number not valid for checking");
+    }
 }
 
 }   // namespace ends

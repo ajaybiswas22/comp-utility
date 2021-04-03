@@ -29,15 +29,8 @@ int main() {
 
     computil::AP<double> obj(1,1,5);
 
-    std::vector<double> a = obj.getAllTerms();
-
-    for(int i =0 ; i< a.size();i++)
-    {
-        std::cout<<a[i]<<" ";
-    }
-    std::cout<<std::endl;
-
-    std::cout<<obj.getNthTerm(5);
+    computil::Prime<unsigned long long> no;
+    std::cout<<no.isPrime(5915587277);
 
     return 0;
 }
