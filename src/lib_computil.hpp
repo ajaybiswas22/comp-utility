@@ -37,7 +37,7 @@ SOFTWARE.
 namespace computil {
 
 /**
-*  @brief A container to calculate the Arithematic Progression and provides
+*  @brief A container to calculate the Arithmetic Progression and provides
 *  fixed time access of elements.
 *
 *  @ingroup sequences and series
@@ -94,9 +94,7 @@ public:
 
     static bool isPrime(T num);
     static T nearestPrime(T num);
-    static std::vector<T> getPrimeInRange(unsigned int lower_limit, unsigned int upper_limit);
-    static std::vector<T> getFirstNPrime(unsigned int n);
-    static std::string getType(T num);
+    static std::vector<T> getPrimeInRange(T lower_limit, T upper_limit);
     static T randomPrime(unsigned int no_of_digits);
 };
 
@@ -133,7 +131,7 @@ bool AP<T>::isEmpty() {
 /**
 *  @brief  Returns the common difference 'd' of an AP.
 *  @return The common difference of the AP of the type same as the class.
-*  @throws std::logic_error if the status if true, i.e., not initialized.
+*  @throws std::logic_error if the status is true, i.e., not initialized.
 *
 *  Returns the common difference 'd' of an AP which was initialized by the user. 
 */
@@ -145,7 +143,7 @@ T AP<T>::getCommonDiff() {
 /**
 *  @brief  Returns the First term of an AP.
 *  @return The first term of the AP of the type same as the class.
-*  @throws std::logic_error if the status if true, i.e., not initialized.
+*  @throws std::logic_error if the status is true, i.e., not initialized.
 *
 *  Returns the first term 'a' of an AP which was initialized by the user.
 */
@@ -158,7 +156,7 @@ T AP<T>::getFirstTerm() {
 *  @brief  Returns the nth term of an AP.
 *  @param  nth  An unsigned integer denoting the n.
 *  @return The nth term of the AP of the type same as the class.
-*  @throws std::logic_error if the status if true, i.e., not initialized.
+*  @throws std::logic_error if the status is true, i.e., not initialized.
 *          std::out_of_range if the nth no. is an invalid term.
            std::domain_error if the nth no. is zero or negative.
 *
@@ -167,24 +165,30 @@ T AP<T>::getFirstTerm() {
 */
 template<class T>
 T AP<T>::getNthTerm(unsigned int nth) {
-
-    if(status == true) {
-        throw std::logic_error("AP not initialized");
+    try{
+        if(status == true) {
+            throw std::logic_error("AP not initialized");
+        }
+        if(nth > n) {
+            throw std::out_of_range("Not enough terms in AP");
+        }
+        if(nth <= 0) {
+            throw std::domain_error("Terms cannot be zero or negative");
+        }
+        return a + (nth-1)*d;
+    } 
+    catch(std::exception& e)
+    {
+        std::cerr<<e.what()<<std::endl;
     }
-    if(nth > n) {
-        throw std::out_of_range("Not enough terms in AP");
-    }
-    if(nth <= 0) {
-        throw std::domain_error("Terms cannot be zero or negative");
-    }
-    return a + (nth-1)*d;
+    
 }
 
 /**
 *  @brief  Returns the nth term of an AP from the last.
 *  @param  nth  An unsigned integer denoting the n.
 *  @return The nth term of the AP from the last of the type same as the class.
-*  @throws std::logic_error if the status if true, i.e., not initialized.
+*  @throws std::logic_error if the status is true, i.e., not initialized.
 *          std::out_of_range if the nth no. is an invalid term.
            std::domain_error if the nth no. is zero or negative.
 *
@@ -193,19 +197,46 @@ T AP<T>::getNthTerm(unsigned int nth) {
 */
 template<class T>
 T AP<T>::getNthTermFromLast(unsigned int nth) {
-    return getNthTerm(n) - (nth-1)*d;
+
+    try{
+        if(status == true) {
+            throw std::logic_error("AP not initialized");
+        }
+        if(nth > n) {
+            throw std::out_of_range("Not enough terms in AP");
+        }
+        if(nth <= 0) {
+            throw std::domain_error("Terms cannot be zero or negative");
+        }
+        return getNthTerm(n) - (nth-1)*d;
+    } 
+    catch(std::exception& e)
+    {
+        std::cerr<<e.what()<<std::endl;
+    }
 }
 
 /**
 *  @brief  Returns the total no. of terms of the AP.
 *  @return The total no. of terms 'n' of the AP of the type same as the class.
-*  @throws std::logic_error if the status if true, i.e., not initialized.
+*  @throws std::logic_error if the status is true, i.e., not initialized.
 *
 *  Returns the total no. of terms 'n' of an AP that was initialized by the user.
 */
 template<class T>
 unsigned int AP<T>::getNoOfTerms() {
-    return n;
+
+    try{
+        if(status == true) {
+            throw std::logic_error("AP not initialized");
+        }
+
+        return n;
+    }
+    catch(std::exception& e)
+    {
+        std::cerr<<e.what()<<std::endl;
+    }
 }
 
 template<class T>
@@ -229,16 +260,33 @@ void AP<T>::setNoOfTerms(T no_of_terms) {
     n = no_of_terms;
 }
 
+/**
+*  @brief  Get all terms of the AP
+*  @return a std::vector that Returns n no. of terms of the AP
+*  @throws std::logic_error if the status is true, i.e., not initialized.
+*
+*  Return a list of terms of an Arithmetic Progrssion.
+*/
 template<class T>
 std::vector<T> AP<T>::getAllTerms() {
     
-    std::vector<T> v;
+    try{
+        if(status == true) {
+            throw std::logic_error("AP not initialized");
+        }
 
-    for(unsigned int i = 0; i<n; i++) {
-        v.push_back(a+ i*d);
+        std::vector<T> v;
+
+        for(unsigned int i = 0; i<n; i++) {
+            v.push_back(a+ i*d);
+        }
+
+        return v;
     }
-
-    return v;
+    catch(std::logic_error& e)
+    {
+        std::cerr<<e.what()<<std::endl;
+    }
 }
 
 template<class T>
@@ -265,7 +313,51 @@ bool Prime<T>::isPrime(T num) {
         return true;
     }
     catch(...) {
-        throw std::domain_error("Number not valid for checking");
+        std::cerr<<"Number not valid for checking"<<std::endl;
+    }
+}
+
+template<class T>
+std::vector<T> Prime<T>::getPrimeInRange(T lower_limit, T upper_limit) {
+    
+    std::vector<T> primes(upper_limit+1, 1);
+    std::vector<T> B;
+
+    try {
+
+        long double v1 = lower_limit- floor(lower_limit);
+        long double v2 = upper_limit - floor(upper_limit);
+        if(v1 > 0.0 || v2 > 0.0)
+            throw std::domain_error("Floating point values not allowed");
+
+        unsigned long long int val1 = lower_limit;
+        unsigned long long int val2 = upper_limit;
+
+        primes[0] = 0;
+        primes[1] = 0;
+        
+        for(unsigned long long int i=2; i<=sqrt(val2); i++)
+        {
+            if(primes[i] == 1)
+            {
+                for(unsigned long long int j=2;(i*j)<=val2;j++)
+                    primes[i*j] = 0;
+            }
+        }
+        
+        for(unsigned long long int i=val1;i<=val2;i++)
+        {
+            if(primes[i] == 1)
+            {
+                B.push_back(i);
+            }
+        }
+        return B;
+
+    }
+    catch(std::domain_error& e)
+    {
+        std::cerr<<e.what()<<std::endl;
     }
 }
 
