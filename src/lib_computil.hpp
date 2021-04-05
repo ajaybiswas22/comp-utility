@@ -208,7 +208,7 @@ T AP<T>::get_nth_term_from_last(unsigned int nth) {
         if(nth <= 0) {
             throw std::domain_error("Terms cannot be zero or negative");
         }
-        return getNthTerm(n) - (nth-1)*d;
+        return get_nth_term(n) - (nth-1)*d;
     } 
     catch(std::exception& e)
     {
@@ -371,7 +371,7 @@ T Prime<T>::nearest_prime(T num) {
         else {
             
             while(num >= 2) {
-                bool st = isPrime(num);
+                bool st = is_prime(num);
                 if(st == true)
                     return num;
                 num--;
