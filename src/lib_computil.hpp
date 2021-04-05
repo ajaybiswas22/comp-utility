@@ -60,18 +60,18 @@ private:
 public:
     AP();
     AP(T first_term, T common_diff, T no_of_terms);   
-    bool isEmpty();
-    T getCommonDiff();
-    T getFirstTerm();
-    T getNthTerm(unsigned int nth);
-    T getNthTermFromLast(unsigned int nth);
-    unsigned int getNoOfTerms();
-    T sumN();
-    static inline T sumN(T first_term, T last_term, unsigned int n) {return n*(first_term + last_term)/2.0;}
-    void setCommonDiff(T common_diff);
-    void setFirstTerm(T first_term);
-    void setNoOfTerms(T no_of_terms);
-    std::vector<T> getAllTerms();
+    bool is_empty();
+    T get_common_diff();
+    T get_first_term();
+    T get_nth_term(unsigned int nth);
+    T get_nth_term_from_last(unsigned int nth);
+    unsigned int get_no_of_terms();
+    T sum_n();
+    static inline T sum_n(T first_term, T last_term, unsigned int n) {return n*(first_term + last_term)/2.0;}
+    void set_common_diff(T common_diff);
+    void set_first_term(T first_term);
+    void set_no_of_terms(T no_of_terms);
+    std::vector<T> get_all_terms();
 };
 
 template<class T>
@@ -92,10 +92,10 @@ private:
 
 public:
 
-    static bool isPrime(T num);
-    static T nearestPrime(T num);
-    static std::vector<T> getPrimeInRange(T lower_limit, T upper_limit);
-    static T randomPrime(unsigned int no_of_digits);
+    static bool is_prime(T num);
+    static T nearest_prime(T num);
+    static std::vector<T> get_prime_in_range(T lower_limit, T upper_limit);
+    static T random_prime(unsigned int no_of_digits);
 };
 
 template<class T>
@@ -124,7 +124,7 @@ AP<T>::AP(T first_term, T common_diff, T no_of_terms) {
 }
 
 template<class T>
-bool AP<T>::isEmpty() {
+bool AP<T>::is_empty() {
     return status;
 }
 
@@ -136,7 +136,7 @@ bool AP<T>::isEmpty() {
 *  Returns the common difference 'd' of an AP which was initialized by the user. 
 */
 template<class T>
-T AP<T>::getCommonDiff() {
+T AP<T>::get_common_diff() {
     return d;
 }
 
@@ -148,7 +148,7 @@ T AP<T>::getCommonDiff() {
 *  Returns the first term 'a' of an AP which was initialized by the user.
 */
 template<class T>
-T AP<T>::getFirstTerm() {
+T AP<T>::get_first_term() {
     return a;
 }
 
@@ -164,7 +164,7 @@ T AP<T>::getFirstTerm() {
 *  to calculate the nth term. 
 */
 template<class T>
-T AP<T>::getNthTerm(unsigned int nth) {
+T AP<T>::get_nth_term(unsigned int nth) {
     try{
         if(status == true) {
             throw std::logic_error("AP not initialized");
@@ -196,7 +196,7 @@ T AP<T>::getNthTerm(unsigned int nth) {
 *  to calculate the nth term from the last.  
 */
 template<class T>
-T AP<T>::getNthTermFromLast(unsigned int nth) {
+T AP<T>::get_nth_term_from_last(unsigned int nth) {
 
     try{
         if(status == true) {
@@ -224,7 +224,7 @@ T AP<T>::getNthTermFromLast(unsigned int nth) {
 *  Returns the total no. of terms 'n' of an AP that was initialized by the user.
 */
 template<class T>
-unsigned int AP<T>::getNoOfTerms() {
+unsigned int AP<T>::get_no_of_terms() {
 
     try{
         if(status == true) {
@@ -240,23 +240,23 @@ unsigned int AP<T>::getNoOfTerms() {
 }
 
 template<class T>
-T AP<T>::sumN() {
+T AP<T>::sum_n() {
     
     return (n/2.0)*(2*a + (n-1)*d);
 }
 
 template<class T>
-void AP<T>::setCommonDiff(T common_diff) {
+void AP<T>::set_common_diff(T common_diff) {
     d = common_diff;
 }
 
 template<class T>
-void AP<T>::setFirstTerm(T first_term) {
+void AP<T>::set_first_term(T first_term) {
     a = first_term;
 }
 
 template<class T>
-void AP<T>::setNoOfTerms(T no_of_terms) {
+void AP<T>::set_no_of_terms(T no_of_terms) {
     n = no_of_terms;
 }
 
@@ -268,7 +268,7 @@ void AP<T>::setNoOfTerms(T no_of_terms) {
 *  Return a list of terms of an Arithmetic Progrssion.
 */
 template<class T>
-std::vector<T> AP<T>::getAllTerms() {
+std::vector<T> AP<T>::get_all_terms() {
     
     try{
         if(status == true) {
@@ -290,7 +290,7 @@ std::vector<T> AP<T>::getAllTerms() {
 }
 
 template<class T>
-bool Prime<T>::isPrime(T num) {
+bool Prime<T>::is_prime(T num) {
     
     try {
 
@@ -318,7 +318,7 @@ bool Prime<T>::isPrime(T num) {
 }
 
 template<class T>
-std::vector<T> Prime<T>::getPrimeInRange(T lower_limit, T upper_limit) {
+std::vector<T> Prime<T>::get_prime_in_range(T lower_limit, T upper_limit) {
     
     std::vector<T> primes(upper_limit+1, 1);
     std::vector<T> B;
@@ -363,7 +363,7 @@ std::vector<T> Prime<T>::getPrimeInRange(T lower_limit, T upper_limit) {
 }
 
 template<class T>
-T Prime<T>::nearestPrime(T num) {
+T Prime<T>::nearest_prime(T num) {
     try {
         num = floor(num);
         if(num < 2)

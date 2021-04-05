@@ -30,7 +30,7 @@ int main() {
     computil::AP<double> obj(1,1,5);
 
     computil::Prime<double> no;
-    std::vector<double> x = no.getPrimeInRange(1,6.8);
+    std::vector<double> x = no.get_prime_in_range(1,6.8);
 
     for(int i=0;i<x.size();i++)
     {
