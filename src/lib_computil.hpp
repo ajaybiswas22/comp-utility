@@ -325,13 +325,14 @@ std::vector<T> Prime<T>::getPrimeInRange(T lower_limit, T upper_limit) {
 
     try {
 
-        long double v1 = lower_limit- floor(lower_limit);
-        long double v2 = upper_limit - floor(upper_limit);
-        if(v1 > 0.0 || v2 > 0.0)
-            throw std::domain_error("Floating point values not allowed");
+        if(lower_limit < 0 || upper_limit < 0)
+            throw std::out_of_range("Range cannot be negative");
 
-        unsigned long long int val1 = lower_limit;
-        unsigned long long int val2 = upper_limit;
+        unsigned long long int val1 = ceil(lower_limit);
+        unsigned long long int val2 = floor(upper_limit);
+
+        if(upper_limit < lower_limit)
+            throw std::out_of_range("Wrong range provided");
 
         primes[0] = 0;
         primes[1] = 0;
@@ -355,8 +356,28 @@ std::vector<T> Prime<T>::getPrimeInRange(T lower_limit, T upper_limit) {
         return B;
 
     }
-    catch(std::domain_error& e)
+    catch(std::exception& e)
     {
+        std::cerr<<e.what()<<std::endl;
+    }
+}
+
+template<class T>
+T Prime<T>::nearestPrime(T num) {
+    try {
+        num = floor(num);
+        if(num < 2)
+            return 2;
+        else {
+            
+            while(num >= 2) {
+                bool st = isPrime(num);
+                if(st == true)
+                    return num;
+                num--;
+            }
+        }
+    } catch(std::exception& e) {
         std::cerr<<e.what()<<std::endl;
     }
 }

@@ -30,9 +30,9 @@ int main() {
     computil::AP<double> obj(1,1,5);
 
     computil::Prime<double> no;
-    std::vector<double> x = no.getPrimeInRange(5,25);
+    std::vector<double> x = no.getPrimeInRange(1,6.8);
 
-    for(unsigned long long int i=0;i<x.size();i++)
+    for(int i=0;i<x.size();i++)
     {
         std::cout<<x[i]<<" ";
     }
