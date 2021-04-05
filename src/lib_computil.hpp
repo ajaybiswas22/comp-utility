@@ -55,12 +55,9 @@ class AP {
 private:
     T a, d;
     unsigned int n;
-    bool status;
 
 public:
-    AP();
     AP(T first_term, T common_diff, T no_of_terms);   
-    bool is_empty();
     T get_common_diff();
     T get_first_term();
     T get_nth_term(unsigned int nth);
@@ -105,33 +102,31 @@ private:
 
 };
 
-
-
 template<class T>
-AP<T>::AP() {
-    status = true;
-    a = 0;
-    d = 0;
-    n = 0;
-} 
+class QuadraticEquation {
+
+private:
+T a,b,c;
+
+public:
+    QuadraticEquation(T coeff_x2, T coeff_x, T constant_term) : a(coeff_x2),b(coeff_x),c(constant_term){}
+    std::pair<T,T> get_roots();
+    inline T get_discriminant() {return b*b - 4*a*c;}
+    inline T get_sum_of_roots() {return (-1 * b)/a;}
+    inline T get_product_of_roots() {return c/a;}
+};
+
 
 template<class T>
 AP<T>::AP(T first_term, T common_diff, T no_of_terms) {
-    status = false;
     a = first_term;
     d = common_diff;
     n = no_of_terms;
 }
 
-template<class T>
-bool AP<T>::is_empty() {
-    return status;
-}
-
 /**
 *  @brief  Returns the common difference 'd' of an AP.
 *  @return The common difference of the AP of the type same as the class.
-*  @throws std::logic_error if the status is true, i.e., not initialized.
 *
 *  Returns the common difference 'd' of an AP which was initialized by the user. 
 */
@@ -143,7 +138,6 @@ T AP<T>::get_common_diff() {
 /**
 *  @brief  Returns the First term of an AP.
 *  @return The first term of the AP of the type same as the class.
-*  @throws std::logic_error if the status is true, i.e., not initialized.
 *
 *  Returns the first term 'a' of an AP which was initialized by the user.
 */
@@ -156,9 +150,8 @@ T AP<T>::get_first_term() {
 *  @brief  Returns the nth term of an AP.
 *  @param  nth  An unsigned integer denoting the n.
 *  @return The nth term of the AP of the type same as the class.
-*  @throws std::logic_error if the status is true, i.e., not initialized.
-*          std::out_of_range if the nth no. is an invalid term.
-           std::domain_error if the nth no. is zero or negative.
+*  @throws std::out_of_range if the nth no. is an invalid term.
+*          std::domain_error if the nth no. is zero or negative.
 *
 *  Uses the first term a, common difference d and the user input nth
 *  to calculate the nth term. 
@@ -166,9 +159,6 @@ T AP<T>::get_first_term() {
 template<class T>
 T AP<T>::get_nth_term(unsigned int nth) {
     try{
-        if(status == true) {
-            throw std::logic_error("AP not initialized");
-        }
         if(nth > n) {
             throw std::out_of_range("Not enough terms in AP");
         }
@@ -188,9 +178,8 @@ T AP<T>::get_nth_term(unsigned int nth) {
 *  @brief  Returns the nth term of an AP from the last.
 *  @param  nth  An unsigned integer denoting the n.
 *  @return The nth term of the AP from the last of the type same as the class.
-*  @throws std::logic_error if the status is true, i.e., not initialized.
-*          std::out_of_range if the nth no. is an invalid term.
-           std::domain_error if the nth no. is zero or negative.
+*  @throws std::out_of_range if the nth no. is an invalid term.
+*          std::domain_error if the nth no. is zero or negative.
 *
 *  Uses the getNthTerm(), common difference d and the user input nth
 *  to calculate the nth term from the last.  
@@ -199,9 +188,6 @@ template<class T>
 T AP<T>::get_nth_term_from_last(unsigned int nth) {
 
     try{
-        if(status == true) {
-            throw std::logic_error("AP not initialized");
-        }
         if(nth > n) {
             throw std::out_of_range("Not enough terms in AP");
         }
@@ -219,29 +205,16 @@ T AP<T>::get_nth_term_from_last(unsigned int nth) {
 /**
 *  @brief  Returns the total no. of terms of the AP.
 *  @return The total no. of terms 'n' of the AP of the type same as the class.
-*  @throws std::logic_error if the status is true, i.e., not initialized.
 *
 *  Returns the total no. of terms 'n' of an AP that was initialized by the user.
 */
 template<class T>
 unsigned int AP<T>::get_no_of_terms() {
-
-    try{
-        if(status == true) {
-            throw std::logic_error("AP not initialized");
-        }
-
-        return n;
-    }
-    catch(std::exception& e)
-    {
-        std::cerr<<e.what()<<std::endl;
-    }
+    return n;
 }
 
 template<class T>
-T AP<T>::sum_n() {
-    
+T AP<T>::sum_n() {  
     return (n/2.0)*(2*a + (n-1)*d);
 }
 
@@ -263,30 +236,19 @@ void AP<T>::set_no_of_terms(T no_of_terms) {
 /**
 *  @brief  Get all terms of the AP
 *  @return a std::vector that Returns n no. of terms of the AP
-*  @throws std::logic_error if the status is true, i.e., not initialized.
 *
 *  Return a list of terms of an Arithmetic Progrssion.
 */
 template<class T>
 std::vector<T> AP<T>::get_all_terms() {
-    
-    try{
-        if(status == true) {
-            throw std::logic_error("AP not initialized");
-        }
 
-        std::vector<T> v;
+    std::vector<T> v;
 
-        for(unsigned int i = 0; i<n; i++) {
-            v.push_back(a+ i*d);
-        }
-
-        return v;
+    for(unsigned int i = 0; i<n; i++) {
+        v.push_back(a+ i*d);
     }
-    catch(std::logic_error& e)
-    {
-        std::cerr<<e.what()<<std::endl;
-    }
+
+    return v;
 }
 
 template<class T>
@@ -312,7 +274,7 @@ bool Prime<T>::is_prime(T num) {
         }
         return true;
     }
-    catch(...) {
+    catch(std::exception& e) {
         std::cerr<<"Number not valid for checking"<<std::endl;
     }
 }
