@@ -32,10 +32,8 @@ int main() {
     computil::Prime<double> no;
     std::vector<double> x = no.get_prime_in_range(1,6.8);
 
-    for(int i=0;i<x.size();i++)
-    {
-        std::cout<<x[i]<<" ";
-    }
+    computil::QuadraticEquation<long double> qe(4,2,1);
+    std::cout<<qe.get_complex_roots().first;
 
     return 0;
 }

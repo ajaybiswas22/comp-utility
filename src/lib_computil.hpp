@@ -28,10 +28,12 @@ SOFTWARE.
 
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <map>
 #include <array>
 #include <cmath>
+#include <complex>
 #include <exception>
 
 namespace computil {
@@ -110,7 +112,8 @@ T a,b,c;
 
 public:
     QuadraticEquation(T coeff_x2, T coeff_x, T constant_term) : a(coeff_x2),b(coeff_x),c(constant_term){}
-    std::pair<T,T> get_roots();
+    std::pair<T,T> get_real_roots();
+    std::pair<std::complex<T>,std::complex<T> > get_complex_roots();
     inline T get_discriminant() {return b*b - 4*a*c;}
     inline T get_sum_of_roots() {return (-1 * b)/a;}
     inline T get_product_of_roots() {return c/a;}
@@ -343,5 +346,26 @@ T Prime<T>::nearest_prime(T num) {
         std::cerr<<e.what()<<std::endl;
     }
 }
+
+template<class T>
+std::pair<T,T> QuadraticEquation<T>::get_real_roots() {
+
+    std::pair<T,T> soln;
+    soln.first = ((-1*b) + sqrt(b*b - 4*a*c) ) / (2*a);
+    soln.second = ((-1*b) - sqrt(b*b - 4*a*c) ) / (2*a);
+    return soln;
+}
+
+template<class T>
+std::pair<std::complex<T>,std::complex<T> > QuadraticEquation<T>::get_complex_roots() {
+
+    std::pair<std::complex<T>,std::complex<T> > soln;
+    std::complex<T> v1 ((-1*b)/(2*a) , sqrt(abs(b*b - 4*a*c))/(2*a) );
+    std::complex<T> v2 ((-1*b)/(2*a) , -1 * ( sqrt(abs(b*b - 4*a*c))/(2*a) ) );
+    soln.first = v1;
+    soln.second = v2;
+    return soln;
+}
+
 
 }   // namespace ends
