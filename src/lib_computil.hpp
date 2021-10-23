@@ -119,6 +119,14 @@ public:
     inline T get_product_of_roots() {return c/a;}
 };
 
+template<class T>
+class APJ {
+
+};
+
+
+/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+
 
 template<class T>
 AP<T>::AP(T first_term, T common_diff, T no_of_terms) {
